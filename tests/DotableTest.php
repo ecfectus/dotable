@@ -142,6 +142,12 @@ class DotableTest extends TestCase
         $this->assertEquals('{"one":{"two":{"three":1}}}', json_encode($d));
     }
 
+    public function testToString()
+    {
+        $d = new Dotable(['one' => ['two' => ['three' => 1]]]);
+        $this->assertEquals('{"one":{"two":{"three":1}}}', (string) $d);
+    }
+
     public function testArrayAccess()
     {
         $d = new Dotable(['one' => ['two' => ['three' => 1]]]);
@@ -173,5 +179,25 @@ class DotableTest extends TestCase
         $this->assertEquals(['two' => []], $d['one']);
         unset($d['one.two']);
         $this->assertEquals([], $d['one']);
+    }
+
+    public function testArrayForeachIterator()
+    {
+        $d = new Dotable(['one' => 1, 'two' => 2]);
+
+        $string = '';
+
+        foreach($d as $key => $value){
+            $string .= $key . $value;
+        }
+
+        $this->assertEquals('one1two2', $string);
+    }
+
+    public function testCount()
+    {
+        $d = new Dotable(['one' => 1, 'two' => 2]);
+
+        $this->assertCount(2, $d);
     }
 }

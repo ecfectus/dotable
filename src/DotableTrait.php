@@ -8,6 +8,10 @@
 
 namespace Ecfectus\Dotable;
 
+use ArrayIterator;
+use CachingIterator;
+use JsonSerializable;
+
 
 trait DotableTrait
 {
@@ -160,7 +164,9 @@ trait DotableTrait
      */
     public function toArray() : array
     {
-        return $this->items;
+        return array_map(function ($value) {
+            return (is_object($value) && method_exists($value, 'toArray')) ? $value->toArray() : $value;
+        }, $this->items);
     }
 
     /**
@@ -226,7 +232,7 @@ trait DotableTrait
     }
 
     /**
-     * Determine if the given array value exists.
+     * Determine if the given array value exists to satisfy the ArrayAccess Interface.
      *
      * @param  string  $key
      * @return bool
@@ -237,7 +243,7 @@ trait DotableTrait
     }
 
     /**
-     * Get a dot notation value from the array.
+     * Get a dot notation value from the array to satisfy the ArrayAccess Interface.
      *
      * @param  string  $key
      * @return mixed
@@ -248,7 +254,7 @@ trait DotableTrait
     }
 
     /**
-     * Set a value into the array using dot notation.
+     * Set a value into the array using dot notation to satisfy the ArrayAccess Interface.
      *
      * @param  string  $key
      * @param  mixed  $value
@@ -260,7 +266,7 @@ trait DotableTrait
     }
 
     /**
-     * Unset a value from the array using do notation.
+     * Unset a value from the array using do notation to satisfy the ArrayAccess Interface.
      *
      * @param  string  $key
      * @return void
@@ -271,12 +277,61 @@ trait DotableTrait
     }
 
     /**
-     * Return a representation of the array suitable for json encoding.
+     * Return a representation of the array suitable for json encoding to satisfy the JsonSerializable Interface.
      *
      * @return array
      */
     public function jsonSerialize() : array
     {
-        return $this->toArray();
+        return array_map(function ($value) {
+            if ($value instanceof JsonSerializable) {
+                return $value->jsonSerialize();
+            } elseif (is_object($value) && method_exists($value, 'toArray')) {
+                return $value->toArray();
+            } else {
+                return $value;
+            }
+        }, $this->items);
+    }
+
+    /**
+     * Returns an iterator for use in foreach loop to satisfy the IteratorAggregate Interface.
+     *
+     * @return \ArrayIterator
+     */
+    public function getIterator() : ArrayIterator
+    {
+        return new ArrayIterator($this->toArray());
+    }
+
+    /**
+     * Get a CachingIterator instance.
+     *
+     * @param  int  $flags
+     * @return \CachingIterator
+     */
+    public function getCachingIterator($flags = CachingIterator::CALL_TOSTRING) : CachingIterator
+    {
+        return new CachingIterator($this->getIterator(), $flags);
+    }
+
+    /**
+     * returns a count of the items to satisfy the Countable Interface
+     *
+     * @return int
+     */
+    public function count() : int
+    {
+        return count($this->items);
+    }
+
+    /**
+     * Convert the collection to its string representation.
+     *
+     * @return string
+     */
+    public function __toString() : string
+    {
+        return json_encode($this->jsonSerialize());
     }
 }
