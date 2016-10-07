@@ -19,14 +19,14 @@ trait DotableTrait
     /**
      * @var array
      */
-    protected $values = [];
+    protected $items = [];
 
     /**
      * @param array $values
      */
     public function __construct(array $values = [])
     {
-        $this->values = $values;
+        $this->items = $values;
     }
 
     /**
@@ -38,7 +38,7 @@ trait DotableTrait
      */
     public function get(string $path = '', $default = null)
     {
-        $array = $this->values;
+        $array = $this->items;
         if (!empty($path)) {
             $keys = $this->explode($path);
             foreach ($keys as $key) {
@@ -62,7 +62,7 @@ trait DotableTrait
     public function set(string $path = '', $value = null, $unset = false) : DotableInterface
     {
         if (!empty($path)) {
-            $at = & $this->values;
+            $at = & $this->items;
             $keys = $this->explode($path);
             while (count($keys) > 0) {
                 if (count($keys) === 1) {
@@ -84,7 +84,7 @@ trait DotableTrait
                 }
             }
         } else {
-            $this->values = $value;
+            $this->items = $value;
         }
         return $this;
     }
@@ -98,7 +98,7 @@ trait DotableTrait
     public function has(string $path = '') : bool
     {
         $keys = $this->explode($path);
-        $array = $this->values;
+        $array = $this->items;
         foreach ($keys as $key) {
             if (isset($array[$key])) {
                 $array = $array[$key];
@@ -160,7 +160,7 @@ trait DotableTrait
      */
     public function toArray() : array
     {
-        return $this->values;
+        return $this->items;
     }
 
     /**
