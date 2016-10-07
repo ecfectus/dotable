@@ -40,27 +40,26 @@ unset($d['one.two.three']);
 $d->forget('one.two.three');
 
 //prepend
-$d->prepend('one.four', 'val2');
-===
 $v = $d['one.four'];
 array_unshift($v, 'val2');
-$d['one.four'] = $v'
-```
+$d['one.four'] = $v
+===
+$d->prepend('one.four', 'val2');
 
 //append
-$d->append('one.four', 'val2');
-===
 $v = $d['one.four'];
 $v[] = 'val2';
 $d['one.four'] = $v'
+===
+$d->append('one.four', 'val2');
 
 //merge
 @todo
 
 //count
-$d->count();
-===
 count($d);
+===
+$d->count();
 
 //get a plain array
 $d->toArray();
