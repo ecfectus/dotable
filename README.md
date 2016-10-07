@@ -54,7 +54,13 @@ $d['one.four'] = $v
 $d->append('one.four', 'val2');
 
 //merge
-@todo
+// merging is a little different, array_merge_recursive has some weird side effects for multi dimensional arrays with different value types,
+// by default we use the dotable merge stratergy which overcomes this with distinct values,
+// but if your expecting exactly what array_merge_recursive does, simply pass false as the third argument.
+
+$res = array_merge_recursive($d['one'], ['two' => ['three' => 2]);
+===
+$d->merge('one', ['two' => ['three' => 2], true|false);
 
 //count
 count($d);
