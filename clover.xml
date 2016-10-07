@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1475880734">
-  <project timestamp="1475880734">
+<coverage generated="1475881106">
+  <project timestamp="1475881106">
     <package name="Ecfectus\Dotable">
       <file name="/Users/leemason/ecfectus/dotable/src/Dotable.php">
         <class name="Dotable" namespace="Ecfectus\Dotable" fullPackage="Ecfectus" package="Ecfectus">
@@ -10,12 +10,12 @@
       </file>
       <file name="/Users/leemason/ecfectus/dotable/src/DotableTrait.php">
         <class name="DotableTrait" namespace="Ecfectus\Dotable">
-          <metrics complexity="67" methods="20" coveredmethods="16" conditionals="0" coveredconditionals="0" statements="84" coveredstatements="79" elements="104" coveredelements="95"/>
+          <metrics complexity="70" methods="20" coveredmethods="16" conditionals="0" coveredconditionals="0" statements="84" coveredstatements="79" elements="104" coveredelements="95"/>
         </class>
         <line num="31" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="25"/>
         <line num="33" type="stmt" count="25"/>
         <line num="34" type="stmt" count="25"/>
-        <line num="43" type="method" name="get" visibility="public" complexity="10" crap="10" count="11"/>
+        <line num="43" type="method" name="get" visibility="public" complexity="11" crap="11" count="11"/>
         <line num="45" type="stmt" count="11"/>
         <line num="46" type="stmt" count="11"/>
         <line num="47" type="stmt" count="5"/>
@@ -26,7 +26,7 @@
         <line num="53" type="stmt" count="3"/>
         <line num="55" type="stmt" count="3"/>
         <line num="59" type="stmt" count="7"/>
-        <line num="69" type="method" name="set" visibility="public" complexity="15" crap="15" count="17"/>
+        <line num="69" type="method" name="set" visibility="public" complexity="16" crap="16" count="17"/>
         <line num="71" type="stmt" count="17"/>
         <line num="72" type="stmt" count="6"/>
         <line num="73" type="stmt" count="0"/>
@@ -48,7 +48,7 @@
         <line num="99" type="stmt" count="7"/>
         <line num="103" type="stmt" count="5"/>
         <line num="105" type="stmt" count="11"/>
-        <line num="114" type="method" name="has" visibility="public" complexity="8" crap="8" count="2"/>
+        <line num="114" type="method" name="has" visibility="public" complexity="9" crap="9" count="2"/>
         <line num="116" type="stmt" count="2"/>
         <line num="117" type="stmt" count="2"/>
         <line num="119" type="stmt" count="2"/>

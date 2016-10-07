@@ -43,7 +43,7 @@ trait DotableTrait
     public function get($path = null, $default = null)
     {
         $array = $this->items;
-        if(is_string($path) && !empty($path) && strpos($path, '.') === false || !is_string($path) && !is_null($path)){
+        if(is_string($path) && !empty($path) && strpos($path, '.') === false || !is_string($path) && !is_null($path) || $path === 0){
             return isset($array[$path]) ? $array[$path] : $default;
         }
         if (!empty($path)) {
@@ -68,7 +68,7 @@ trait DotableTrait
      */
     public function set($path = null, $value = null, $unset = false) : DotableInterface
     {
-        if(is_string($path) && !empty($path) && strpos($path, '.') === false || !is_string($path) && !is_null($path)){
+        if(is_string($path) && !empty($path) && strpos($path, '.') === false || !is_string($path) && !is_null($path) || $path === 0){
             if($value === null && $unset === true){
                 unset($this->items[$path]);
             }else{
@@ -113,7 +113,7 @@ trait DotableTrait
      */
     public function has($path) : bool
     {
-        if(is_string($path) && !empty($path) && strpos($path, '.') === false || !is_string($path) && !is_null($path)){
+        if(is_string($path) && !empty($path) && strpos($path, '.') === false || !is_string($path) && !is_null($path) || $path === 0){
             return isset($this->items[$path]);
         }
         $keys = $this->explode($path);
