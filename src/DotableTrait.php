@@ -40,14 +40,13 @@ trait DotableTrait
      * @param null $default
      * @return mixed
      */
-    public function get($path = '', $default = null)
+    public function get($path, $default = null)
     {
-        if(is_int($path)){
-            return $this->items[$path];
-        }
-
         $array = $this->items;
         if (!empty($path)) {
+            if(strpos($path, '.') === false){
+                return $array[$path];
+            }
             $keys = $this->explode($path);
             foreach ($keys as $key) {
                 if (isset($array[$key])) {
@@ -67,18 +66,18 @@ trait DotableTrait
      * @param $value
      * @return DotableInterface
      */
-    public function set($path = '', $value = null, $unset = false) : DotableInterface
+    public function set($path, $value = null, $unset = false) : DotableInterface
     {
-        if(is_int($path)){
-            if($value === null && $unset === true){
-                unset($this->items[$path]);
-            }else{
-                $this->items[$path] = $value;
-            }
-            return $this;
-        }
 
         if (!empty($path)) {
+            if(strpos($path, '.') === false){
+                if($value === null && $unset === true){
+                    unset($this->items[$path]);
+                }else{
+                    $this->items[$path] = $value;
+                }
+                return $this;
+            }
             $at = & $this->items;
             $keys = $this->explode($path);
             while (count($keys) > 0) {
@@ -112,9 +111,9 @@ trait DotableTrait
      * @param string $path
      * @return bool
      */
-    public function has($path = '') : bool
+    public function has($path) : bool
     {
-        if(is_int($path)){
+        if(strpos($path, '.') === false){
             return isset($this->items[$path]);
         }
         $keys = $this->explode($path);
@@ -135,7 +134,7 @@ trait DotableTrait
      * @param string $path
      * @return DotableInterface
      */
-    public function forget($path = '') : DotableInterface
+    public function forget($path) : DotableInterface
     {
         return $this->set($path, null, true);
     }
@@ -147,7 +146,7 @@ trait DotableTrait
      * @param  mixed  $value
      * @return DotableInterface
      */
-    public function prepend($path = '', $value) : DotableInterface
+    public function prepend($path, $value) : DotableInterface
     {
         $array = $this->get($path);
         array_unshift($array, $value);
@@ -161,7 +160,7 @@ trait DotableTrait
      * @param  mixed  $value
      * @return DotableInterface
      */
-    public function append($path = '', $value) : DotableInterface
+    public function append($path, $value) : DotableInterface
     {
         $array = $this->get($path);
         $array[] = $value;
@@ -177,7 +176,7 @@ trait DotableTrait
      * @param bool $distinct
      * @return DotableInterface
      */
-    public function merge($path = '', array $values = [], $distinct = true) : DotableInterface
+    public function merge($path, array $values = [], $distinct = true) : DotableInterface
     {
         $get = (array)$this->get($path);
         $this->set($path, ($distinct) ? $this->arrayMergeRecursiveDistinct($get, $values) : array_merge_recursive($get, $values));

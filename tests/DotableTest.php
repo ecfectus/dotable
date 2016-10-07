@@ -73,7 +73,7 @@ class DotableTest extends TestCase
     public function testGet()
     {
         $d = new Dotable(['one' => ['two' => ['three' => 1]]]);
-        $this->assertEquals(['one' => ['two' => ['three' => 1]]], $d->get());
+        $this->assertEquals(['one' => ['two' => ['three' => 1]]], $d->get(null));
         $this->assertEquals(['two' => ['three' => 1]], $d->get('one'));
         $this->assertEquals(['three' => 1], $d->get('one.two'));
         $this->assertEquals(1, $d->get('one.two.three'));
@@ -103,15 +103,15 @@ class DotableTest extends TestCase
     public function testPrepend()
     {
         $d = new Dotable(['one' => ['two' => [2, 3]]]);
-        $this->assertEquals(['one' => ['two' => [2, 3]]], $d->get());
+        $this->assertEquals(['one' => ['two' => [2, 3]]], $d->get(''));
         $d->prepend('one.two', 1);
-        $this->assertEquals(['one' => ['two' => [1, 2, 3]]], $d->get());
+        $this->assertEquals(['one' => ['two' => [1, 2, 3]]], $d->get(''));
     }
 
     public function testAppend()
     {
         $d = new Dotable(['one' => ['two' => [2, 3]]]);
-        $this->assertEquals(['one' => ['two' => [2, 3]]], $d->get());
+        $this->assertEquals(['one' => ['two' => [2, 3]]], $d->get(''));
         $d->append('one.two', 4);
         $this->assertEquals(['one' => ['two' => [2, 3, 4]]], $d->get());
     }
@@ -120,28 +120,28 @@ class DotableTest extends TestCase
     {
         $d = new Dotable(['one' => 'two']);
         $d->merge('', ['one' => 'three']);
-        $this->assertEquals(['one' => 'three'], $d->get());
+        $this->assertEquals(['one' => 'three'], $d->get(''));
     }
 
     public function testMergeDeep()
     {
         $d = new Dotable(['one' => ['two' => ['three', 'four']]]);
         $d->merge('', ['one' => ['two' => ['five', 'six']]]);
-        $this->assertEquals(['one' => ['two' => ['three', 'four', 'five', 'six']]], $d->get());
+        $this->assertEquals(['one' => ['two' => ['three', 'four', 'five', 'six']]], $d->get(''));
     }
 
     public function testMergeIndexDeep()
     {
         $d = new Dotable(['one' => ['two' => [0 => 'three', 1 => 'four']]]);
         $d->merge('', ['one' => ['two' => [0 => 'five', 1 => 'six', 2 => 'severn']]]);
-        $this->assertEquals(['one' => ['two' => ['three', 'four', 'five', 'six', 'severn']]], $d->get());
+        $this->assertEquals(['one' => ['two' => ['three', 'four', 'five', 'six', 'severn']]], $d->get(''));
     }
 
     public function testMergeKeyedDeep()
     {
         $d = new Dotable(['one' => ['two' => ['three' => 'three', 'four' => 'four']]]);
         $d->merge('', ['one' => ['two' => ['five' => 'five', 'three' => 'six']]]);
-        $this->assertEquals(['one' => ['two' => ['three' => 'six', 'four' => 'four', 'five' => 'five']]], $d->get());
+        $this->assertEquals(['one' => ['two' => ['three' => 'six', 'four' => 'four', 'five' => 'five']]], $d->get(''));
     }
 
     public function testToJson()
