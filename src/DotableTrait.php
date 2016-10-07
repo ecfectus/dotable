@@ -176,7 +176,7 @@ trait DotableTrait
     public function toArray() : array
     {
         return array_map(function ($value) {
-            return (is_object($value) && method_exists($value, 'toArray')) ? $value->toArray() : $value;
+            return (is_object($value) && is_callable([$value, 'toArray'])) ? $value->toArray() : $value;
         }, $this->items);
     }
 
@@ -297,7 +297,7 @@ trait DotableTrait
         return array_map(function ($value) {
             if ($value instanceof JsonSerializable) {
                 return $value->jsonSerialize();
-            } elseif (is_object($value) && method_exists($value, 'toArray')) {
+            } elseif (is_object($value) && is_callable([$value, 'toArray'])) {
                 return $value->toArray();
             } else {
                 return $value;
