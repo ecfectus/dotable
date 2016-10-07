@@ -31,7 +31,7 @@ class DotableTest extends TestCase
         $d->set('three.four.five', 1);
         $this->assertEquals(['one' => ['two' => 2], 'three' => ['four' => ['five' => 1]]], $d->toArray());
 
-        $d->set('', ['one' => 'two']);
+        $d->set(null, ['one' => 'two']);
         $this->assertEquals(['one' => 'two'], $d->toArray());
     }
 

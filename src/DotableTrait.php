@@ -40,13 +40,13 @@ trait DotableTrait
      * @param null $default
      * @return mixed
      */
-    public function get($path, $default = null)
+    public function get($path = null, $default = null)
     {
         $array = $this->items;
+        if(is_string($path) && !empty($path) && strpos($path, '.') === false || !is_string($path) && !is_null($path)){
+            return isset($array[$path]) ? $array[$path] : $default;
+        }
         if (!empty($path)) {
-            if(strpos($path, '.') === false){
-                return $array[$path];
-            }
             $keys = $this->explode($path);
             foreach ($keys as $key) {
                 if (isset($array[$key])) {
@@ -66,18 +66,18 @@ trait DotableTrait
      * @param $value
      * @return DotableInterface
      */
-    public function set($path, $value = null, $unset = false) : DotableInterface
+    public function set($path = null, $value = null, $unset = false) : DotableInterface
     {
+        if(is_string($path) && !empty($path) && strpos($path, '.') === false || !is_string($path) && !is_null($path)){
+            if($value === null && $unset === true){
+                unset($this->items[$path]);
+            }else{
+                $this->items[$path] = $value;
+            }
+            return $this;
+        }
 
         if (!empty($path)) {
-            if(strpos($path, '.') === false){
-                if($value === null && $unset === true){
-                    unset($this->items[$path]);
-                }else{
-                    $this->items[$path] = $value;
-                }
-                return $this;
-            }
             $at = & $this->items;
             $keys = $this->explode($path);
             while (count($keys) > 0) {
@@ -113,7 +113,7 @@ trait DotableTrait
      */
     public function has($path) : bool
     {
-        if(strpos($path, '.') === false){
+        if(is_string($path) && !empty($path) && strpos($path, '.') === false || !is_string($path) && !is_null($path)){
             return isset($this->items[$path]);
         }
         $keys = $this->explode($path);
