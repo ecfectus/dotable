@@ -1,0 +1,33 @@
+{
+    "name": "ecfectus/cdotable",
+    "description": "A simple dot notation accessible array class and trait.",
+    "license": "MIT",
+    "homepage": "https://github.com/ecfectus/dotable",
+    "authors": [
+        {
+            "name": "leemason",
+            "email": "contact@nohalfpixels.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit" : "^5.5.0",
+        "phpdocumentor/phpdocumentor": "2.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ecfectus\\Dotable\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Ecfectus\\Dotable\\Test\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "docs": "vendor/bin/phpdoc"
+    }
+}
