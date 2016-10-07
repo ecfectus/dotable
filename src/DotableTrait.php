@@ -271,8 +271,12 @@ trait DotableTrait
      * @param  mixed  $value
      * @return void
      */
-    public function offsetSet($key, $value)
+    public function offsetSet($key = null, $value)
     {
+        if(is_null($key)){
+            $this->append('', $value);
+            return;
+        }
         $this->set($key, $value);
     }
 
