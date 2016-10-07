@@ -49,7 +49,7 @@ $d->prepend('one.four', 'val2');
 //append
 $v = $d['one.four'];
 $v[] = 'val2';
-$d['one.four'] = $v'
+$d['one.four'] = $v
 ===
 $d->append('one.four', 'val2');
 
