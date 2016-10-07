@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1475881106">
-  <project timestamp="1475881106">
+<coverage generated="1475881235">
+  <project timestamp="1475881235">
     <package name="Ecfectus\Dotable">
       <file name="/Users/leemason/ecfectus/dotable/src/Dotable.php">
         <class name="Dotable" namespace="Ecfectus\Dotable" fullPackage="Ecfectus" package="Ecfectus">

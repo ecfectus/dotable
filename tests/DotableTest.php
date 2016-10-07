@@ -78,6 +78,11 @@ class DotableTest extends TestCase
         $this->assertEquals(['three' => 1], $d->get('one.two'));
         $this->assertEquals(1, $d->get('one.two.three'));
         $this->assertEquals(false, $d->get('one.two.three.next', false));
+
+        $d = new Dotable(['one', 'two']);
+        $this->assertEquals('one', $d->get(0));
+        $this->assertEquals('two', $d->get(1));
+
     }
 
     public function testHas()
@@ -161,6 +166,10 @@ class DotableTest extends TestCase
     {
         $d = new Dotable(['one' => ['two' => ['three' => 1]]]);
         $this->assertEquals(['two' => ['three' => 1]], $d['one']);
+
+        $d = new Dotable(['one', 'two']);
+        $this->assertEquals('one', $d[0]);
+        $this->assertEquals('two', $d[1]);
     }
 
     public function testArraySet()
