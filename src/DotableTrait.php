@@ -12,9 +12,9 @@ namespace Ecfectus\Dotable;
 trait DotableTrait
 {
     /**
-     *
+     * @var string
      */
-    public static $SEPARATOR = '/[:\.]/';
+    public static $SEPARATOR = '.';
 
     /**
      * @var array
@@ -30,9 +30,11 @@ trait DotableTrait
     }
 
     /**
+     * Get a value from the array using dot notation.
+     *
      * @param string $path
      * @param null $default
-     * @return array|null
+     * @return mixed
      */
     public function get(string $path = '', $default = null)
     {
@@ -51,11 +53,13 @@ trait DotableTrait
     }
 
     /**
+     * Set a value in the array using dot notation.
+     *
      * @param string $path
      * @param $value
-     * @return self
+     * @return DotableInterface
      */
-    public function set(string $path = '', $value) : self
+    public function set(string $path = '', $value = null, $unset = false) : DotableInterface
     {
         if (!empty($path)) {
             $at = & $this->values;
@@ -63,14 +67,18 @@ trait DotableTrait
             while (count($keys) > 0) {
                 if (count($keys) === 1) {
                     if (is_array($at)) {
-                        $at[array_shift($keys)] = $value;
+                        if($value === null && $unset === true){
+                            unset($at[array_shift($keys)]);
+                        }else{
+                            $at[array_shift($keys)] = $value;
+                        }
                     } else {
                         throw new \RuntimeException("Can not set value at this path ($path) because is not array.");
                     }
                 } else {
                     $key = array_shift($keys);
                     if (!isset($at[$key])) {
-                        $at[$key] = array();
+                        $at[$key] = [];
                     }
                     $at = & $at[$key];
                 }
@@ -82,18 +90,8 @@ trait DotableTrait
     }
 
     /**
-     * @param string $path
-     * @param array $values
-     * @return self
-     */
-    public function add(string $path = '', array $values = []) : self
-    {
-        $get = (array)$this->get($path);
-        $this->set($path, $this->arrayMergeRecursiveDistinct($get, $values));
-        return $this;
-    }
-
-    /**
+     * Check the existance of a key in the array using dot notation.
+     *
      * @param string $path
      * @return bool
      */
@@ -112,31 +110,68 @@ trait DotableTrait
     }
 
     /**
-     * @param array $values
-     * @return self
+     * Prepend a value onto an array value in the array using dot notation.
+     *
+     * @param  string  $key
+     * @param  mixed  $value
+     * @return DotableInterface
      */
-    public function setValues(array $values = []) : self
+    public function prepend(string $path = '', $value) : DotableInterface
     {
-        $this->values = $values;
+        $array = $this->get($path);
+        array_unshift($array, $value);
+        $this->set($path, $array);
+        return $this;
+    }
+    /**
+     * Push a value onto an array in the array using dot notation.
+     *
+     * @param  string  $key
+     * @param  mixed  $value
+     * @return DotableInterface
+     */
+    public function append(string $path = '', $value) : DotableInterface
+    {
+        $array = $this->get($path);
+        $array[] = $value;
+        $this->set($path, $array);
         return $this;
     }
 
     /**
+     * Merge one array into the main array using dot notation. Optionally use array_merge_recursive instead of built in merge stratergy.
+     *
+     * @param string $path
+     * @param array $values
+     * @param bool $distinct
+     * @return DotableInterface
+     */
+    public function merge(string $path = '', array $values = [], $distinct = true) : DotableInterface
+    {
+        $get = (array)$this->get($path);
+        $this->set($path, ($distinct) ? $this->arrayMergeRecursiveDistinct($get, $values) : array_merge_recursive($get, $values));
+        return $this;
+    }
+
+    /**
+     * Return the whole array
+     *
      * @return array
      */
-    public function getValues() : array
+    public function toArray() : array
     {
         return $this->values;
     }
 
     /**
+     * Explode the given path into an array of path parts using the given seperator.
+     *
      * @param $path
      * @return array
      */
-    protected function explode($path)
+    protected function explode($path) : array
     {
-        //return explode('.', $path);
-        return preg_split(self::$SEPARATOR, $path);
+        return explode(self::$SEPARATOR, $path);
     }
 
     /**
@@ -188,5 +223,60 @@ trait DotableTrait
             }
         }
         return $merged;
+    }
+
+    /**
+     * Determine if the given array value exists.
+     *
+     * @param  string  $key
+     * @return bool
+     */
+    public function offsetExists($key) : bool
+    {
+        return $this->has($key);
+    }
+
+    /**
+     * Get a dot notation value from the array.
+     *
+     * @param  string  $key
+     * @return mixed
+     */
+    public function offsetGet($key)
+    {
+        return $this->get($key);
+    }
+
+    /**
+     * Set a value into the array using dot notation.
+     *
+     * @param  string  $key
+     * @param  mixed  $value
+     * @return void
+     */
+    public function offsetSet($key, $value)
+    {
+        $this->set($key, $value);
+    }
+
+    /**
+     * Unset a value from the array using do notation.
+     *
+     * @param  string  $key
+     * @return void
+     */
+    public function offsetUnset($key)
+    {
+        $this->set($key, null, true);
+    }
+
+    /**
+     * Return a representation of the array suitable for json encoding.
+     *
+     * @return array
+     */
+    public function jsonSerialize() : array
+    {
+        return $this->toArray();
     }
 }
