@@ -114,6 +114,17 @@ trait DotableTrait
     }
 
     /**
+     * Unset/forget a value from the array using dot notation.
+     *
+     * @param string $path
+     * @return DotableInterface
+     */
+    public function forget(string $path = '') : DotableInterface
+    {
+        return $this->set($path, null, true);
+    }
+
+    /**
      * Prepend a value onto an array value in the array using dot notation.
      *
      * @param  string  $key
@@ -273,7 +284,7 @@ trait DotableTrait
      */
     public function offsetUnset($key)
     {
-        $this->set($key, null, true);
+        $this->forget($key);
     }
 
     /**

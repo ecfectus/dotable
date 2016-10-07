@@ -17,6 +17,8 @@ interface DotableInterface
 
     public function has(string $path = '') : bool;
 
+    public function forget(string $path = '') : DotableInterface;
+
     public function prepend(string $path = '', $value) : DotableInterface;
 
     public function append(string $path = '', $value) : DotableInterface;

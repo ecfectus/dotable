@@ -91,6 +91,15 @@ class DotableTest extends TestCase
         $this->assertFalse($d->has('false'));
     }
 
+    public function testForget()
+    {
+        $d = new Dotable(['one' => ['two' => ['three' => 1]]]);
+        $d->forget('one.two.three');
+        $this->assertEquals(['two' => []], $d->get('one'));
+        $d->forget('one.two');
+        $this->assertEquals([], $d->get('one'));
+    }
+
     public function testPrepend()
     {
         $d = new Dotable(['one' => ['two' => [2, 3]]]);
