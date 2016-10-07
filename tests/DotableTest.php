@@ -65,7 +65,7 @@ class DotableTest extends TestCase
     public function testGet()
     {
         $d = new Dotable(['one' => ['two' => ['three' => 1]]]);
-        $this->assertEquals(['one' => ['two' => ['three' => 1]]], $d->get(null));
+        $this->assertEquals(['one' => ['two' => ['three' => 1]]], $d->get());
         $this->assertEquals(['two' => ['three' => 1]], $d->get('one'));
         $this->assertEquals(['three' => 1], $d->get('one.two'));
         $this->assertEquals(1, $d->get('one.two.three'));
@@ -74,11 +74,11 @@ class DotableTest extends TestCase
     public function testHave()
     {
         $d = new Dotable(['one' => ['two' => ['three' => 1]]]);
-        $this->assertTrue($d->have('one'));
-        $this->assertTrue($d->have('one.two'));
-        $this->assertTrue($d->have('one.two.three'));
-        $this->assertFalse($d->have('one.two.three.false'));
-        $this->assertFalse($d->have('one.false.three'));
-        $this->assertFalse($d->have('false'));
+        $this->assertTrue($d->has('one'));
+        $this->assertTrue($d->has('one.two'));
+        $this->assertTrue($d->has('one.two.three'));
+        $this->assertFalse($d->has('one.two.three.false'));
+        $this->assertFalse($d->has('one.false.three'));
+        $this->assertFalse($d->has('false'));
     }
 }
