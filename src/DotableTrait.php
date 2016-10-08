@@ -192,7 +192,7 @@ trait DotableTrait
     {
         return array_map(function ($value) {
             return (is_object($value) && is_callable([$value, 'toArray'])) ? $value->toArray() : $value;
-        }, $this->items);
+        }, $this->items ?? []);
     }
 
     /**
@@ -321,7 +321,7 @@ trait DotableTrait
             } else {
                 return $value;
             }
-        }, $this->items);
+        }, $this->items ?? []);
     }
 
     /**
